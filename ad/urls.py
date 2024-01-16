@@ -22,5 +22,6 @@ import adserver.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', adserver.views.index),
-    # path('testdb/', adserver.views.testdb, name='testdb')
+    path('add_product/', adserver.views.add_product, name='add_product'),
+    path('add_ad/', adserver.views.add_ad, name='add_ad')
 ]
