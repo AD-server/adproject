@@ -30,112 +30,41 @@
 		/>
 		<link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css" />
 		<link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css" />
-		<!--
-<script nonce="6f16f58f-e699-4c15-a006-b2b4d63aa1b1">(function(w,d){!function(dp,dq,dr,ds){dp[dr]=dp[dr]||{};dp[dr].executed=[];dp.zaraz={deferred:[],listeners:[]};dp.zaraz.q=[];dp.zaraz._f=function(dt){return async function(){var du=Array.prototype.slice.call(arguments);dp.zaraz.q.push({m:dt,a:du})}};for(const dv of["track","set","debug"])dp.zaraz[dv]=dp.zaraz._f(dv);dp.zaraz.init=()=>{var dw=dq.getElementsByTagName(ds)[0],dx=dq.createElement(ds),dy=dq.getElementsByTagName("title")[0];dy&&(dp[dr].t=dq.getElementsByTagName("title")[0].text);dp[dr].x=Math.random();dp[dr].w=dp.screen.width;dp[dr].h=dp.screen.height;dp[dr].j=dp.innerHeight;dp[dr].e=dp.innerWidth;dp[dr].l=dp.location.href;dp[dr].r=dq.referrer;dp[dr].k=dp.screen.colorDepth;dp[dr].n=dq.characterSet;dp[dr].o=(new Date).getTimezoneOffset();if(dp.dataLayer)for(const dC of Object.entries(Object.entries(dataLayer).reduce(((dD,dE)=>({...dD[1],...dE[1]})),{})))zaraz.set(dC[0],dC[1],{scope:"page"});dp[dr].q=[];for(;dp.zaraz.q.length;){const dF=dp.zaraz.q.shift();dp[dr].q.push(dF)}dx.defer=!0;for(const dG of[localStorage,sessionStorage])Object.keys(dG||{}).filter((dI=>dI.startsWith("_zaraz_"))).forEach((dH=>{try{dp[dr]["z_"+dH.slice(7)]=JSON.parse(dG.getItem(dH))}catch{dp[dr]["z_"+dH.slice(7)]=dG.getItem(dH)}}));dx.referrerPolicy="origin";dx.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(dp[dr])));dw.parentNode.insertBefore(dx,dw)};["complete","interactive"].includes(dq.readyState)?zaraz.init():dp.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
--->
+		
+		<script nonce="6f16f58f-e699-4c15-a006-b2b4d63aa1b1">(function(w,d){!function(dp,dq,dr,ds){dp[dr]=dp[dr]||{};dp[dr].executed=[];dp.zaraz={deferred:[],listeners:[]};dp.zaraz.q=[];dp.zaraz._f=function(dt){return async function(){var du=Array.prototype.slice.call(arguments);dp.zaraz.q.push({m:dt,a:du})}};for(const dv of["track","set","debug"])dp.zaraz[dv]=dp.zaraz._f(dv);dp.zaraz.init=()=>{var dw=dq.getElementsByTagName(ds)[0],dx=dq.createElement(ds),dy=dq.getElementsByTagName("title")[0];dy&&(dp[dr].t=dq.getElementsByTagName("title")[0].text);dp[dr].x=Math.random();dp[dr].w=dp.screen.width;dp[dr].h=dp.screen.height;dp[dr].j=dp.innerHeight;dp[dr].e=dp.innerWidth;dp[dr].l=dp.location.href;dp[dr].r=dq.referrer;dp[dr].k=dp.screen.colorDepth;dp[dr].n=dq.characterSet;dp[dr].o=(new Date).getTimezoneOffset();if(dp.dataLayer)for(const dC of Object.entries(Object.entries(dataLayer).reduce(((dD,dE)=>({...dD[1],...dE[1]})),{})))zaraz.set(dC[0],dC[1],{scope:"page"});dp[dr].q=[];for(;dp.zaraz.q.length;){const dF=dp.zaraz.q.shift();dp[dr].q.push(dF)}dx.defer=!0;for(const dG of[localStorage,sessionStorage])Object.keys(dG||{}).filter((dI=>dI.startsWith("_zaraz_"))).forEach((dH=>{try{dp[dr]["z_"+dH.slice(7)]=JSON.parse(dG.getItem(dH))}catch{dp[dr]["z_"+dH.slice(7)]=dG.getItem(dH)}}));dx.referrerPolicy="origin";dx.src="/cdn-cgi/zaraz/s.js?z="+btoa(encodeURIComponent(JSON.stringify(dp[dr])));dw.parentNode.insertBefore(dx,dw)};["complete","interactive"].includes(dq.readyState)?zaraz.init():dp.addEventListener("DOMContentLoaded",zaraz.init)}(w,d,"zarazData","script");})(window,document);</script></head>
+
 		<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
 		<link
 			rel="stylesheet"
 			href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"
 		/>
+		<script src="../../plugins/jquery/jquery.min.js"></script>
+		<!-- Bootstrap CSS -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		/>
+
+		<!-- jQuery and Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	</head>
 	<body>
-		<button type="button" class="btn btn-block btn-primary btn-lg">ADD1</button>
-		<button type="button" class="btn btn-block btn-primary btn-lg">ADD2</button>
-		<button type="button" class="btn btn-block btn-primary btn-lg">
-			AD test
-		</button>
-		<div class="card-body">
-			<div class="form-group">
-				<label>product id</label>
-				<input
-					class="form-control"
-					id="inputProductId"
-					placeholder="product id"
-				/>
-			</div>
-			<div class="form-group">
-				<label>ad url</label>
-				<input class="form-control" id="inputAdUrl" placeholder="ad url" />
-			</div>
-			<div class="form-group">
-				<label>link url</label>
-				<input class="form-control" id="inputLinkUrl" placeholder="link url" />
-			</div>
-			<div class="form-group">
-				<label>slot id</label>
-				<input class="form-control" id="inputSlotId" placeholder="slot id" />
-			</div>
-			<div class="form-group">
-				<label>cost type</label>
-				<input
-					class="form-control"
-					id="inputCostType"
-					placeholder="cost type"
-				/>
-			</div>
-			<div class="form-group">
-				<label>start date</label>
-				<input
-					class="form-control"
-					id="inputStartDate"
-					placeholder="start date"
-				/>
-			</div>
-			<div class="form-group">
-				<label>end date</label>
-				<input class="form-control" id="inputEndDate" placeholder="end date" />
+		<div class="container">
+			<div class="row button-container">
+				<div class="col-md-4">
+					{% include 'add_product_form.html' %}
+				</div>
+				<div class="col-md-4">
+					{% include 'add_ad_form.html' %}
+				</div>
+				<div class="col-md-4">
+					{% include 'ad_test.html' %}
+				</div>
 			</div>
 		</div>
 
-		<div class="card-footer">
-			<button type="submit" class="btn btn-primary" onclick="addAd()">
-				Submit
-			</button>
-		</div>
-
-		<script>
-			function addAd() {
-				// 사용자가 입력한 값들을 formData에 저장
-				var formData = {
-					product_id: document.getElementById("inputProductId").value,
-					ad_url: document.getElementById("inputAdUrl").value,
-					link_url: document.getElementById("inputLinkUrl").value,
-					slot_id: document.getElementById("inputSlotId").value,
-					cost_type: document.getElementById("inputCostType").value,
-					start_date: document.getElementById("inputStartDate").value,
-					end_date: document.getElementById("inputEndDate").value,
-				};
-				try {
-					// fetch 함수로 서버에 POST 요청을 보냄
-					fetch("http://127.0.0.1:8000/add_ad/", {
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-						},
-						// formData를 JSON 문자열로 변환하고 요청의 본문으로 설정
-						body: JSON.stringify(formData),
-					})
-						.then((response) => {
-							if (!response.ok) {
-								throw new Error("response.ok가 아님");
-							}
-							// 응답 데이터를 JSON 형태로 파싱
-							return response.json();
-						})
-						.then((data) => {
-							// 성공한 경우
-							console.log("Success:", data);
-						})
-						.catch((error) => {
-							// 오류: 서버 응답이나 JSON 파싱에 문제가 있는 경우
-							console.error("Error2:", error);
-						});
-				} catch (error) {
-					// 오류: fetch 함수 호출이나 JSON 문자열 변환에 문제가 있는 경우
-					console.error("Error1:", error);
-				}
-			}
-		</script>
+		
 	</body>
 </html>
