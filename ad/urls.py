@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', adserver.views.index),
     path('add_product/', adserver.views.add_product, name='add_product'),
-    path('add_ad/', adserver.views.add_ad, name='add_ad')
+    path('add_ad/', adserver.views.add_ad, name='add_ad'),
+    path('search_ad/', adserver.views.search_ad, name="search_ad")
 ]
