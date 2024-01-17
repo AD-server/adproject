@@ -24,5 +24,10 @@ urlpatterns = [
     path('index/', adserver.views.index),
     path('add_product/', adserver.views.add_product, name='add_product'),
     path('add_ad/', adserver.views.add_ad, name='add_ad'),
-    path('search_ad/', adserver.views.search_ad, name="search_ad")
+    path('search_ad/', adserver.views.search_ad, name="search_ad"),
+    path('detail_ad/', adserver.views.detail_ad, name="detail_ad"),
+    path('modify_ad/', adserver.views.modify_ad, name="modify_ad"),
+    path('delete_ad/', adserver.views.delete_ad, name="delete_ad"),
+    path('test_ad/', adserver.views.test_ad, name="test_ad"),
+    
 ]
