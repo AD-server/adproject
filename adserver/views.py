@@ -12,6 +12,8 @@ from django.views.decorators.csrf import csrf_exempt
 def index(request):
     return render(request, 'index.html')
 
+def ad_list(request):
+    return render(request, 'ad_list.html')
 
 @csrf_exempt
 def add_product(request):
@@ -95,7 +97,7 @@ def search_ad(request):
     if filter == "ad_id":
         if input == "":
             try:
-                with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+                with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
                     cursor = conn.cursor()
 
@@ -133,7 +135,7 @@ def search_ad(request):
     elif filter == "product_name":
         if input == "":
             try:
-                with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+                with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
                     cursor = conn.cursor()
 

@@ -1,0 +1,96 @@
+<button
+	type="button"
+	class="btn btn-block btn-primary btn-lg"
+	data-toggle="modal"
+	data-target="#product_form"
+>
+	ADD Product
+</button>
+
+<div class="modal fade" id="product_form">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">ADD Product</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<!--card-->
+				<div class="card-body">
+					<div class="form-group">
+						<label>advertiser id</label>
+						<input
+							class="form-control"
+							id="inputAdvertiserId"
+							placeholder="advertiser id"
+						/>
+					</div>
+					<div class="form-group">
+						<label>title</label>
+						<input class="form-control" id="inputTitle" placeholder="title" />
+					</div>
+					<div class="form-group">
+						<label>target</label>
+						<input class="form-control" id="inputTarget" placeholder="target" />
+					</div>
+				</div>
+				<!--card 끝-->
+			</div>
+			<div class="modal-footer justify-content-between">
+				<button type="button" class="btn btn-default" data-dismiss="modal">
+					Close
+				</button>
+				<button type="button" class="btn btn-primary" onclick="addProduct()">
+					ADD
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	function addProduct() {
+		// 사용자가 입력한 값들을 formData에 저장
+		var formData = {
+			advertiser_id: document.getElementById("inputAdvertiserId").value,
+			title: document.getElementById("inputTitle").value,
+			target: document.getElementById("inputTarget").value,
+		};
+		try {
+			// fetch 함수로 서버에 POST 요청을 보냄
+			fetch("http://127.0.0.1:8000/add_product/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				// formData를 JSON 문자열로 변환하고 요청의 본문으로 설정
+				body: JSON.stringify(formData),
+			})
+				.then((response) => {
+					if (!response.ok) {
+						throw new Error("!response.ok");
+					}
+					// 응답 데이터를 JSON 형태로 파싱
+					return response.json();
+				})
+				.then((data) => {
+					// 성공한 경우
+					console.log("Success:", data);
+				})
+				.catch((error) => {
+					// 오류: 서버 응답이나 JSON 파싱에 문제가 있는 경우
+					console.error("Error2:", error);
+				});
+		} catch (error) {
+			// 오류: fetch 함수 호출이나 JSON 문자열 변환에 문제가 있는 경우
+			console.error("Error1:", error);
+		}
+	}
+</script>
