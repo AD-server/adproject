@@ -302,7 +302,8 @@
 					"삭제",
 					"btn btn-outline-secondary",
 					function () {
-						alert("삭제 버튼 클릭: " + data.ad_id);
+						var adId = data.ad_id;
+						deleteAd(adId);
 					}
 				);
 				btnGroupContainer.appendChild(deleteButton);
@@ -493,27 +494,6 @@
 				};
 			}
 
-			// Function to create and show a popup
-			function showPopup(message, isSuccess) {
-				var popupContainer = document.createElement("div");
-				popupContainer.className = isSuccess ? "success-popup" : "error-popup";
-				popupContainer.classList.add("centered-popup");
-
-				var closeButton = document.createElement("button");
-				closeButton.textContent = "Close";
-				closeButton.onclick = function () {
-					document.body.removeChild(popupContainer);
-				};
-
-				var messageElement = document.createElement("div");
-				messageElement.textContent = message;
-
-				popupContainer.appendChild(messageElement);
-				popupContainer.appendChild(closeButton);
-
-				document.body.appendChild(popupContainer);
-			}
-
 			// Commit 버튼 클릭 시 수정 내용 적용
 			function commitChanges() {
 				try {
@@ -543,23 +523,12 @@
 					})
 					.then(response => response.json())
 					.then(data => {
-						// Handle the response from the edit_ad API
-						console.log("Edit Ad API Response:", data);
-
-						// Check if the API call was successful
-						if (data.success) {
-							showPopup("Changes applied successfully!", true);
-
-							// Refresh the table after successful edit
-							searchAd();
-						} else {
-							showPopup("Failed to apply changes. Please try again.", false);
-						}
+						// Handle the response from the edit_ad API if needed
+						alert("Edit Ad API Response: " + JSON.stringify(data));
 					})
 					.catch(error => {
 						console.error("Error during edit_ad API request:", error);
-						// Handle the error, e.g., show an alert to the user
-						showPopup("Failed to apply changes. Please try again.", false);
+						alert("Failed to edit ad. Please try again.");
 					})
 					.finally(() => {
 						// Close the popup after the request is complete, successful or not
@@ -567,8 +536,37 @@
 					});
 				} catch (error) {
 					console.error("Error during commitChanges:", error);
-					// Handle error, e.g., show an alert to the user
-					showPopup("An error occurred. Please try again.", false);
+					alert("An error occurred. Please try again.");
+				}
+			}
+
+			// Delete Ad 함수
+			async function deleteAd(adId) {
+				try {
+					// Example URL, replace with your actual delete_ad API endpoint
+					const deleteAdApiUrl = "http://127.0.0.1:8000/delete_ad/";
+
+					// Make a POST request to the delete_ad API with the ad_id value
+					const response = await fetch(deleteAdApiUrl, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							ad_id: adId,
+						}),
+					});
+
+					const data = await response.json();
+
+					// Handle the response from the delete_ad API if needed
+					alert("Delete Ad API Response: " + JSON.stringify(data));
+
+					// You can also refresh the table or perform any other necessary updates after deletion
+					searchAd();
+				} catch (error) {
+					console.error("Error during deleteAd:", error);
+					alert("Failed to delete ad. Please try again.");
 				}
 			}
 
