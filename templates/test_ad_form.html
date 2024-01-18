@@ -1,0 +1,124 @@
+<button
+	type="button"
+	class="btn btn-block btn-success btn-lg"
+	data-toggle="modal"
+	data-target="#test_ad_form"
+>
+	TEST Ad
+</button>
+
+<div class="modal fade" id="test_ad_form">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">TEST Ad</h4>
+				<button
+					type="button"
+					class="close"
+					data-dismiss="modal"
+					aria-label="Close"
+				>
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<!-- Section 1 -->
+						<!-- Card -->
+						<div class="card-body">
+							<div class="form-group">
+								<label>product id</label>
+								<input
+									class="form-control"
+									id="inputProductId"
+									placeholder="product id"
+								/>
+							</div>
+							<div class="form-group">
+								<label>date</label>
+								<input class="form-control" id="inputDate" placeholder="date" />
+							</div>
+						</div>
+						<!-- Card 끝 -->
+
+						<button type="button" class="btn btn-default" data-dismiss="modal">
+							Close
+						</button>
+						<button type="button" class="btn btn-success" onclick="testAd()">
+							TEST
+						</button>
+						<!-- Section 1 끝 -->
+
+						<!-- Section 2 -->
+						<br />
+						<br />
+						<h3>결과</h3>
+						<br />
+						<div id="textDataSection">()</div>
+						<br />
+						<!-- Section 2 끝 -->
+					</div>
+					<div class="col-md-6">
+						<!-- Section 3 -->
+						<br />
+						<h3>슬롯</h3>
+						<div>()</div>
+						<br />
+						<!-- Section 3 끝 -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		var textData = "()";
+
+		async function testAd() {
+			var productId = document.getElementById("inputProductId").value;
+			var date = document.getElementById("inputDate").value;
+
+			/*
+		try {
+			const response = fetch("http://127.0.0.1:8000/test_ad/", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(product_id: productId),
+			})
+				.then((response) => {
+					testData = response.json();
+					return response.json();
+				})
+				.then((data) => {
+					console.log("Success:", data);
+				})
+				.catch((error) => {
+					console.error("Error2:", error);
+				});
+		} catch (error) {
+			console.error("Error1:", error);
+		}
+		*/
+
+			var testData = {
+				advertiser_id: "abcd",
+				title: "조던",
+				target: "20대",
+				ad_url: "www.google.com",
+				link_url: "www.link.com",
+				slot_id: 1,
+				cost_type: "click",
+				end_date: "2022-02-27",
+				start_date: "2022-03-27",
+			};
+
+			textData = JSON.stringify(testData);
+			var textDataContainer = document.getElementById("textDataSection");
+			textDataContainer.textContent = textData;
+		}
+	</script>
+</div>
