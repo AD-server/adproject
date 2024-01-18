@@ -411,12 +411,13 @@
 			}
 
 			// 선택한 검색 유형을 저장할 변수
-			var searchType = "광고ID";
+			var selectedCondition = "광고ID";
 
 			// 검색 유형 설정 함수
-			function setSearchType(type) {
-				searchType = type;
-				document.getElementById("searchType").innerText = searchType;
+			function setSelectedCondition(con) {
+				selectedCondition = con;
+				document.getElementById("selectedCondition").innerText =
+					selectedCondition;
 			}
 
 			// 검색 함수
@@ -430,7 +431,7 @@
 				console.log("Selected Condition:", selectedCondition);
 				/*
                 console.log(
-					"검색합니다! 검색타입: " + searchType + " 검색어: " + searchInput
+					"검색합니다! 검색타입: " + search + " 검색어: " + searchInput
 				);
                 */
 
