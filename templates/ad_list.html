@@ -151,13 +151,13 @@
 							<span id="searchType">ad_id</span>
 						</button>
 						<div class="dropdown-menu" id="searchType">
-							<a class="dropdown-item" href="#" onclick="setSearchType('ad_id')"
+							<a class="dropdown-item" href="#" onclick="setSelectedCondition('ad_id')"
 								>ad_id</a
 							>
 							<a
 								class="dropdown-item"
 								href="#"
-								onclick="setSearchType('product_name')"
+								onclick="setSelectedCondition('product_name')"
 								>product_name</a
 							>
 						</div>
@@ -244,7 +244,7 @@
 								<label>slot id</label>
 								<input
 									class="form-control"
-									id="inputSlotId"
+									id="slotId"
 									placeholder="slot id"
 								/>
 							</div>
@@ -411,12 +411,12 @@
 			}
 
 			// 선택한 검색 유형을 저장할 변수
-			var selectedCondition = "광고ID";
+			var searchedType = "광고ID";
 
 			// 검색 유형 설정 함수
 			function setSelectedCondition(con) {
 				selectedCondition = con;
-				document.getElementById("selectedCondition").innerText =
+				document.getElementById("searchType").innerText =
 					selectedCondition;
 			}
 
@@ -585,7 +585,7 @@
 						detailData.ad_id,
 						detailData.slot_id,
 						detailData.cost_type,
-						detailData.ad_url,
+						detailData.url,
 						detailData.link_url,
 						detailData.start_date,
 						detailData.end_date,
