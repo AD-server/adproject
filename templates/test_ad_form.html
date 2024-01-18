@@ -99,23 +99,58 @@
 					// var date = document.getElementById("inputDate").value;
 
 				try {
-					const response = fetch("http://127.0.0.1:8000/test_ad/", {
+					const response = await fetch("http://127.0.0.1:8000/test_ad/", {
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
 						},
 						body: JSON.stringify({product_name: productName}),
-					})
-						.then((response) => {
-							testData = response.json();
-							return response.json();
-						})
-						.then((data) => {
-							console.log("Success:", data);
-						})
-						.catch((error) => {
-							console.error("Error2:", error);
-						});
+					});
+						// .then((response) => {
+						// 	testData = response.json();
+						// 	return response.json();
+						// })
+						// .then((data) => {
+						// 	console.log("Success:", data);
+						// })
+						// .catch((error) => {
+						// 	console.error("Error2:", error);
+						// });
+
+						// textData = JSON.stringify(testData.data);
+						testData = await response.json();
+						console.log(textData);
+						var dataLength = testData.data.length;
+						// console.log(textData);
+						// console.log(dataLength);
+
+						var tableDataContainer = document.getElementById("tableBody");
+						tableDataContainer.innerHTML = ""; // table 비우기
+
+						for (var i = 0; i < dataLength; i++) {
+							var rowData = testData.data[i];
+							var row = document.createElement("tr");
+
+							var slotIdCell = document.createElement("td");
+							slotIdCell.textContent = rowData.slot_id;
+							row.appendChild(slotIdCell);
+
+							var adUrlCell = document.createElement("td");
+							var urlElement = document.createElement("a");
+							urlElement.href = rowData.ad_url;
+							urlElement.textContent = rowData.ad_url;
+							adUrlCell.appendChild(urlElement);
+							row.appendChild(adUrlCell);
+
+							var linkUrlCell = document.createElement("td");
+							var urlElement = document.createElement("a");
+							urlElement.href = rowData.link_url;
+							urlElement.textContent = rowData.link_url;
+							linkUrlCell.appendChild(urlElement);
+							row.appendChild(linkUrlCell);
+
+							tableDataContainer.appendChild(row);
+						}						
 				} catch (error) {
 					console.error("Error1:", error);
 				}
@@ -147,39 +182,39 @@
 						],
 					};
 		*/
-					textData = JSON.stringify(testData.data);
-
-					var dataLength = testData.data.length;
+					// textData = JSON.stringify(testData.data);
 					// console.log(textData);
-					// console.log(dataLength);
+					// var dataLength = testData.data.length;
+					// // console.log(textData);
+					// // console.log(dataLength);
 
-					var tableDataContainer = document.getElementById("tableBody");
-					tableDataContainer.innerHTML = ""; // table 비우기
+					// var tableDataContainer = document.getElementById("tableBody");
+					// tableDataContainer.innerHTML = ""; // table 비우기
 
-					for (var i = 0; i < dataLength; i++) {
-						var rowData = testData.data[i];
-						var row = document.createElement("tr");
+					// for (var i = 0; i < dataLength; i++) {
+					// 	var rowData = testData.data[i];
+					// 	var row = document.createElement("tr");
 
-						var slotIdCell = document.createElement("td");
-						slotIdCell.textContent = rowData.slot_id;
-						row.appendChild(slotIdCell);
+					// 	var slotIdCell = document.createElement("td");
+					// 	slotIdCell.textContent = rowData.slot_id;
+					// 	row.appendChild(slotIdCell);
 
-						var adUrlCell = document.createElement("td");
-						var urlElement = document.createElement("a");
-						urlElement.href = rowData.ad_url;
-						urlElement.textContent = rowData.ad_url;
-						adUrlCell.appendChild(urlElement);
-						row.appendChild(adUrlCell);
+					// 	var adUrlCell = document.createElement("td");
+					// 	var urlElement = document.createElement("a");
+					// 	urlElement.href = rowData.ad_url;
+					// 	urlElement.textContent = rowData.ad_url;
+					// 	adUrlCell.appendChild(urlElement);
+					// 	row.appendChild(adUrlCell);
 
-						var linkUrlCell = document.createElement("td");
-						var urlElement = document.createElement("a");
-						urlElement.href = rowData.link_url;
-						urlElement.textContent = rowData.link_url;
-						linkUrlCell.appendChild(urlElement);
-						row.appendChild(linkUrlCell);
+					// 	var linkUrlCell = document.createElement("td");
+					// 	var urlElement = document.createElement("a");
+					// 	urlElement.href = rowData.link_url;
+					// 	urlElement.textContent = rowData.link_url;
+					// 	linkUrlCell.appendChild(urlElement);
+					// 	row.appendChild(linkUrlCell);
 
-						tableDataContainer.appendChild(row);
-					}
+					// 	tableDataContainer.appendChild(row);
+					// }
 				}
 	</script>
 </div>
