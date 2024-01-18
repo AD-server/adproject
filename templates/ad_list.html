@@ -96,50 +96,55 @@
 			#pagination li {
 				margin-right: 5px; /* Add some space between pagination items */
 				cursor: pointer;
-  			}
+			}
 		</style>
 	</head>
 
 	<body>
-		<div class="row">
-			<div class="col-md-8">
-				<div class="input-group mb-3">
-					<div class="input-group-prepend">
-						<button
-							type="button"
-							class="btn btn-default dropdown-toggle"
-							data-toggle="dropdown"
-						>
-							<span id="searchType">ad_id</span>
-						</button>
-						<div class="dropdown-menu" id="searchType">
-							<a class="dropdown-item" href="#" onclick="setSelectedCondition('ad_id')"
-								>ad_id</a
+		<div class="container">
+			<div class="row">
+				<div class="col-md-10">
+					<div class="input-group mb-3">
+						<div class="input-group-prepend">
+							<button
+								type="button"
+								class="btn btn-default dropdown-toggle"
+								data-toggle="dropdown"
 							>
-							<a
-								class="dropdown-item"
-								href="#"
-								onclick="setSelectedCondition('product_name')"
-								>product_name</a
-							>
+								<span id="searchType">ad_id</span>
+							</button>
+							<div class="dropdown-menu" id="searchType">
+								<a
+									class="dropdown-item"
+									href="#"
+									onclick="setSelectedCondition('ad_id')"
+									>ad_id</a
+								>
+								<a
+									class="dropdown-item"
+									href="#"
+									onclick="setSelectedCondition('product_name')"
+									>product_name</a
+								>
+							</div>
 						</div>
+						<input
+							type="text"
+							class="form-control"
+							id="searchInput"
+							placeholder="검색어를 입력하세요"
+						/>
 					</div>
-					<input
-						type="text"
-						class="form-control"
-						id="searchInput"
-						placeholder="검색어를 입력하세요"
-					/>
 				</div>
-			</div>
-			<div class="col-md-3">
-				<button
-					type="button"
-					class="btn btn-block btn-primary"
-					onclick="searchAd()"
-				>
-					검색
-				</button>
+				<div class="col-md-2">
+					<button
+						type="button"
+						class="btn btn-block btn-primary"
+						onclick="searchAd()"
+					>
+						검색
+					</button>
+				</div>
 			</div>
 		</div>
 
@@ -204,11 +209,7 @@
 							</div>
 							<div class="form-group">
 								<label>slot id</label>
-								<input
-									class="form-control"
-									id="slotId"
-									placeholder="slot id"
-								/>
+								<input class="form-control" id="slotId" placeholder="slot id" />
 							</div>
 							<div class="form-group">
 								<label>cost type</label>
@@ -344,8 +345,7 @@
 			// 검색 유형 설정 함수
 			function setSelectedCondition(con) {
 				selectedCondition = con;
-				document.getElementById("searchType").innerText =
-					selectedCondition;
+				document.getElementById("searchType").innerText = selectedCondition;
 			}
 
 			// 검색 함수
@@ -367,19 +367,16 @@
 				clearPagination();
 
 				try {
-					const response = await fetch(
-						"http://127.0.0.1:8000/search_ad/",
-						{
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify({
-								condition: selectedCondition,
-								search_input: searchInput,
-							}),
-						}
-					);
+					const response = await fetch("http://127.0.0.1:8000/search_ad/", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							condition: selectedCondition,
+							search_input: searchInput,
+						}),
+					});
 					const jsonDataArray = await response.json();
 					console.log(jsonDataArray);
 
@@ -445,14 +442,14 @@
 			async function getDetailAd(adId) {
 				try {
 					// 실제 서버 API 호출은 주석처리된 부분을 사용
-					const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
-					    method: 'POST',
-					    headers: {
-					        'Content-Type': 'application/json',
-					    },
-					    body: JSON.stringify({
-					        ad_id: adId,
-					    }),
+					const response = await fetch("http://127.0.0.1:8000/detail_ad/", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							ad_id: adId,
+						}),
 					});
 					const detailData = await response.json();
 
@@ -481,14 +478,14 @@
 			async function editButtonClicked(adId) {
 				try {
 					// 실제 서버 API 호출은 주석처리된 부분을 사용
-					const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
-					     method: 'POST',
-					     headers: {
-					         'Content-Type': 'application/json',
-					     },
-					     body: JSON.stringify({
-					         ad_id: adId,
-					     }),
+					const response = await fetch("http://127.0.0.1:8000/detail_ad/", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							ad_id: adId,
+						}),
 					});
 					const detailData = await response.json();
 
@@ -594,27 +591,27 @@
 						},
 						body: JSON.stringify(editedData),
 					})
-					.then((response) => response.json())
-					.then((data) => {
-						// Handle the response from the edit_ad API if needed
-						alert("Edit Ad API Response: " + JSON.stringify(data));
+						.then((response) => response.json())
+						.then((data) => {
+							// Handle the response from the edit_ad API if needed
+							alert("Edit Ad API Response: " + JSON.stringify(data));
 
-						// Check if the edit was successful before refreshing the table
-						if (data.success) {
-							// Close the popup
-							$("#editPopup").modal("hide");
+							// Check if the edit was successful before refreshing the table
+							if (data.success) {
+								// Close the popup
+								$("#editPopup").modal("hide");
 
-							// Refresh the table
-							searchAd();
-						} else {
-							// Handle the case where the edit was not successful
+								// Refresh the table
+								searchAd();
+							} else {
+								// Handle the case where the edit was not successful
+								alert("Failed to edit ad. Please try again.");
+							}
+						})
+						.catch((error) => {
+							console.error("Error during edit_ad API request:", error);
 							alert("Failed to edit ad. Please try again.");
-						}
-					})
-					.catch((error) => {
-						console.error("Error during edit_ad API request:", error);
-						alert("Failed to edit ad. Please try again.");
-					});
+						});
 				} catch (error) {
 					console.error("Error during commitChanges:", error);
 					alert("An error occurred. Please try again.");
