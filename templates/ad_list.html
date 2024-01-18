@@ -414,12 +414,13 @@
 			}
 
 			// 선택한 검색 유형을 저장할 변수
-			var searchType = "광고ID";
+			var selectedCondition = "광고ID";
 
 			// 검색 유형 설정 함수
-			function setSearchType(type) {
-				searchType = type;
-				document.getElementById("searchType").innerText = searchType;
+			function setSelectedCondition(con) {
+				selectedCondition = con;
+				document.getElementById("selectedCondition").innerText =
+					selectedCondition;
 			}
 
 			// 검색 함수
@@ -433,7 +434,7 @@
 				console.log("Selected Condition:", selectedCondition);
 				/*
                 console.log(
-					"검색합니다! 검색타입: " + searchType + " 검색어: " + searchInput
+					"검색합니다! 검색타입: " + search + " 검색어: " + searchInput
 				);
                 */
 
@@ -441,48 +442,48 @@
 				clearPagination();
 
 				try {
-					// const response = await fetch(
-					// 	"http://127.0.0.1:8000/search_ad/",
-					// 	{
-					// 		method: "POST",
-					// 		headers: {
-					// 			"Content-Type": "application/json",
-					// 		},
-					// 		body: JSON.stringify({
-					// 			condition: selectedCondition,
-					// 			search_input: searchInput,
-					// 		}),
-					// 	}
-					// );
-					// const jsonDataArray = await response.json();
-					// console.log(jsonDataArray);
+					const response = await fetch(
+						"http://127.0.0.1:8000/search_ad/",
+						{
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								condition: selectedCondition,
+								search_input: searchInput,
+							}),
+						}
+					);
+					const jsonDataArray = await response.json();
+					console.log(jsonDataArray);
 
 					// 예시 JSON 데이터 (2개만 출력)
-					var jsonDataArray = {
-						data: [
-							{
-								ad_id: 1,
-								slot_id: 2,
-								content_type: "이미지",
-								start_date: "2024-10-20",
-								end_date: "2024-10-25",
-							},
-							{
-								ad_id: 2,
-								slot_id: 4,
-								content_type: "이미지",
-								start_date: "2024-10-22",
-								end_date: "2024-10-26",
-							},
-							{
-								ad_id: 3,
-								slot_id: 3,
-								content_type: "이미지",
-								start_date: "2024-10-24",
-								end_date: "2024-10-27",
-							},
-						],
-					};
+					// var jsonDataArray = {
+					// 	data: [
+					// 		{
+					// 			ad_id: 1,
+					// 			slot_id: 2,
+					// 			content_type: "이미지",
+					// 			start_date: "2024-10-20",
+					// 			end_date: "2024-10-25",
+					// 		},
+					// 		{
+					// 			ad_id: 2,
+					// 			slot_id: 4,
+					// 			content_type: "이미지",
+					// 			start_date: "2024-10-22",
+					// 			end_date: "2024-10-26",
+					// 		},
+					// 		{
+					// 			ad_id: 3,
+					// 			slot_id: 3,
+					// 			content_type: "이미지",
+					// 			start_date: "2024-10-24",
+					// 			end_date: "2024-10-27",
+					// 		},
+					// 	],
+					// };
 
 					if (jsonDataArray.length === 0) {
 						var tableBody = document
@@ -519,30 +520,30 @@
 			async function getDetailAd(adId) {
 				try {
 					// 실제 서버 API 호출은 주석처리된 부분을 사용
-					// const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
-					//     method: 'POST',
-					//     headers: {
-					//         'Content-Type': 'application/json',
-					//     },
-					//     body: JSON.stringify({
-					//         ad_id: adId,
-					//     }),
-					// });
-					// const detailData = await response.json();
+					const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
+					    method: 'POST',
+					    headers: {
+					        'Content-Type': 'application/json',
+					    },
+					    body: JSON.stringify({
+					        ad_id: adId,
+					    }),
+					});
+					const detailData = await response.json();
 
 					// 예시 JSON 데이터 사용
-					const detailData = {
-						advertiser_id: "abcd",
-						product_name: "조던",
-						target: "20대",
-						ad_id: 1,
-						slot_id: 1,
-						ad_url: "www.google.com",
-						link_url: "www.link.com",
-						cost_type: "click",
-						start_date: "2022-03-27",
-						end_date: "2022-02-27",
-					};
+					// const detailData = {
+					// 	advertiser_id: "abcd",
+					// 	product_name: "조던",
+					// 	target: "20대",
+					// 	ad_id: 1,
+					// 	slot_id: 1,
+					// 	ad_url: "www.google.com",
+					// 	link_url: "www.link.com",
+					// 	cost_type: "click",
+					// 	start_date: "2022-03-27",
+					// 	end_date: "2022-02-27",
+					// };
 
 					// 받아온 데이터를 출력
 					alert(JSON.stringify(detailData));
@@ -555,30 +556,30 @@
 			async function editButtonClicked(adId) {
 				try {
 					// 실제 서버 API 호출은 주석처리된 부분을 사용
-					// const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
-					//      method: 'POST',
-					//      headers: {
-					//          'Content-Type': 'application/json',
-					//      },
-					//      body: JSON.stringify({
-					//          ad_id: adId,
-					//      }),
-					// });
-					// const detailData = await response.json();
+					const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
+					     method: 'POST',
+					     headers: {
+					         'Content-Type': 'application/json',
+					     },
+					     body: JSON.stringify({
+					         ad_id: adId,
+					     }),
+					});
+					const detailData = await response.json();
 
 					// 예시 JSON 데이터 사용
-					const detailData = {
-						advertiser_id: "abcd",
-						product_name: "조던",
-						target: "20대",
-						ad_id: 1,
-						slot_id: 1,
-						ad_url: "www.google.com",
-						link_url: "www.link.com",
-						cost_type: "click",
-						start_date: "2022-03-27",
-						end_date: "2022-02-27",
-					};
+					// const detailData = {
+					// 	advertiser_id: "abcd",
+					// 	product_name: "조던",
+					// 	target: "20대",
+					// 	ad_id: 1,
+					// 	slot_id: 1,
+					// 	ad_url: "www.google.com",
+					// 	link_url: "www.link.com",
+					// 	cost_type: "click",
+					// 	start_date: "2022-03-27",
+					// 	end_date: "2022-02-27",
+					// };
 
 					// 각 입력란에 해당하는 id 배열
 					const inputIds = [

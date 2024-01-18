@@ -20,11 +20,11 @@ def add_product(request):
     # print(request.body)
     inputdata = json.loads(request.body.decode('utf-8'))
     advertiser_id = inputdata['advertiser_id']
-    title = inputdata['title']
+    title = inputdata['product_name']
     target = inputdata['target']
     # print(inputdata)
     try:
-        with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+        with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
 
@@ -51,7 +51,7 @@ def add_ad(request):
     product_id = inputdata['product_id']
     # print(inputdata)
     try:
-        with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+        with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
 
@@ -82,7 +82,7 @@ def detail_ad(request):
             conn.commit()
 
             
-            return JsonResponse({"advertiser_id" : data[0][0], "title" : data[0][1], "target" : data[0][2], "url" : data[0][3], "link_url" : data[0][4], "slot_id" : data[0][5], "cost_type" : data[0][6], "end_date" : data[0][7], "start_date" : data[0][8]}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
+            return JsonResponse({"ad_id": ad_id, "advertiser_id" : data[0][0], "product_name" : data[0][1], "target" : data[0][2], "url" : data[0][3], "link_url" : data[0][4], "slot_id" : data[0][5], "cost_type" : data[0][6], "end_date" : data[0][7], "start_date" : data[0][8]}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
     except Exception as e:    
         print('예외가 발생했습니다.', e)
         return JsonResponse({'success' : False}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
@@ -90,10 +90,12 @@ def detail_ad(request):
 
 @csrf_exempt
 def search_ad(request):
-    # print(request.body)
+    
     inputdata = json.loads(request.body.decode('utf-8'))
+    print(inputdata)
     filter = inputdata['condition']
     input = inputdata['search_input']
+
     if filter == "ad_id":
         if input == "":
             try:
@@ -205,7 +207,6 @@ def delete_ad(request):
         with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
-
             sql = f"""delete from ad where ad_id = {ad_id};"""
 
             cursor.execute(sql)
@@ -223,7 +224,7 @@ def test_ad(request):
     inputdata = json.loads(request.body.decode('utf-8'))
     ad_id = inputdata['ad_id']
     try:
-        with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+        with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
 
