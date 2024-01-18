@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>게시판</title>
+
+		<style>
+			body {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				height: 100vh;
+				margin: 0;
+			}
+
+			.search-container {
+				width: 90%;
+				display: flex;
+				align-items: left;
+				margin-top: 10px;
+			}
+
+			.search-container select {
+				width: 10%;
+				margin-right: 1%;
+				text-align: center;
+			}
+
+			.search-container input {
+				width: 50%;
+				margin-right: 5px;
+				text-align: center;
+			}
+
+			.table-container {
+				width: 90%;
+				item-alignment: center;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+			}
+
+			th,
+			td {
+				border: 1px solid #ddd;
+				padding: 8px;
+				text-align: center;
+			}
+
+			th:nth-child(1),
+			td:nth-child(1) {
+				width: 25%; /* 첫 번째 컬럼 너비 조절 */
+			}
+
+			th:nth-child(2),
+			td:nth-child(2) {
+				width: 5%; /* 두 번째 컬럼 너비 조절 */
+			}
+
+			th:nth-child(3),
+			td:nth-child(3) {
+				width: 10%; /* 세 번째 컬럼 너비 조절 */
+			}
+
+			th:nth-child(4),
+			td:nth-child(4) {
+				width: 15%; /* 네 번째 컬럼 너비 조절 */
+			}
+
+			th:nth-child(5),
+			td:nth-child(5) {
+				width: 15%; /* 다섯 번째 컬럼 너비 조절 */
+			}
+
+			th:nth-child(6),
+			td:nth-child(6) {
+				width: 30%; /* 여섯 번째 컬럼 너비 조절 */
+			}
+
+			th.button-column::before {
+				content: "조작";
+				display: block;
+			}
+
+			.button-column {
+				width: 1%;
+				white-space: nowrap;
+				text-align: center;
+			}
+
+			.button-column button {
+				margin-left: 5px;
+			}
+
+			td:last-child {
+				text-align: center;
+			}
+
+			.popup-container {
+				display: none;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #fff;
+				padding: 20px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				z-index: 999;
+			}
+
+			.popup-container label {
+				display: block;
+				margin-bottom: 10px;
+			}
+
+			.popup-container input {
+				width: 100%;
+				padding: 5px;
+				margin-bottom: 10px;
+			}
+
+			.popup-buttons {
+				text-align: right;
+				margin-top: 10px; /* Adjust the top margin as needed */
+			}
+
+			.popup-container button {
+				background-color: #4caf50;
+				color: #fff;
+				padding: 10px;
+				border: none;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="row">
+			<div class="col-md-8">
+				<div class="input-group mb-3">
+					<div class="input-group-prepend">
+						<button
+							type="button"
+							class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown"
+						>
+							<span id="searchType">ad_id</span>
+						</button>
+						<div class="dropdown-menu" id="searchType">
+							<a
+								class="dropdown-item"
+								href="#"
+								onclick="setSearchType('ad_id')"
+								>ad_id</a
+							>
+							<a
+								class="dropdown-item"
+								href="#"
+								onclick="setSearchType('product_name')"
+								>product_name</a
+							>
+						</div>
+					</div>
+					<input
+						type="text"
+						class="form-control"
+						id="searchInput"
+						placeholder="검색어를 입력하세요"
+					/>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<button
+					type="button"
+					class="btn btn-block btn-primary"
+					onclick="searchAd()"
+				>
+					검색
+				</button>
+			</div>
+		</div>
+
+		<!-- .table-container 추가 -->
+		<div class="table-container">
+			<table
+				id="boardTable"
+				class="table table-bordered table-striped Datatable"
+			>
+				<thead>
+					<tr>
+						<th>광고 ID</th>
+						<th>슬롯 ID</th>
+						<th>컨텐츠 타입</th>
+						<th>시작 날짜</th>
+						<th>종료 날짜</th>
+						<th class="button-column"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 여기에 동적으로 내용이 추가될 예정 -->
+				</tbody>
+			</table>
+		</div>
+
+		<div id="editPopup" class="popup-container">
+			<label for="advertiserId">Advertiser ID:</label>
+			<input type="text" id="advertiserId" readonly />
+
+			<label for="productName">Product ID:</label>
+			<input type="text" id="productName" readonly />
+
+			<label for="adId">Ad ID:</label>
+			<input type="text" id="adId" readonly />
+
+			<label for="slotId">Slot ID:</label>
+			<input type="text" id="slotId" />
+
+			<label for="costType">Cost Type:</label>
+			<input type="text" id="costType" />
+
+			<label for="adUrl">Ad URL:</label>
+			<input type="text" id="adUrl" />
+
+			<label for="linkUrl">Link URL:</label>
+			<input type="text" id="linkUrl" />
+
+			<label for="startDate">Start Date:</label>
+			<input type="text" id="startDate" />
+
+			<label for="endDate">End Date:</label>
+			<input type="text" id="endDate" />
+
+			<div class="popup-buttons">
+				<button onclick="commitChanges()">Commit</button>
+			</div>
+		</div>
+
+		<ul class="pagination" id="pagination"></ul>
+
+		<script>
+			var itemsPerPage = 10;
+			var currentPage = 1;
+
+			// 테이블에 내용 추가하는 함수
+			function addRow(data) {
+				var tableBody = document
+					.getElementById("boardTable")
+					.getElementsByTagName("tbody")[0];
+				var newRow = tableBody.insertRow(tableBody.rows.length);
+
+				for (var key in data) {
+					if (data.hasOwnProperty(key)) {
+						var cell = newRow.insertCell();
+						cell.textContent = data[key];
+					}
+				}
+
+				var buttonCell = newRow.insertCell();
+				buttonCell.className = "button-column";
+
+				var btnGroupContainer = document.createElement("div");
+				btnGroupContainer.className =
+					"row button-container justify-content-center";
+
+				function createButton(text, className, clickHandler) {
+					var button = document.createElement("button");
+					button.type = "button";
+					button.className = className;
+					button.textContent = text;
+					button.onclick = clickHandler;
+					return button;
+				}
+
+				// 상세 버튼
+				var detailButton = createButton(
+					"상세",
+					"btn btn-outline-primary",
+					function () {
+						var adId = data.ad_id;
+						getDetailAd(adId);
+					}
+				);
+				btnGroupContainer.appendChild(detailButton);
+
+				// 수정 버튼
+				var editButton = createButton(
+					"수정",
+					"btn btn-outline-primary",
+					function () {
+						var adId = data.ad_id;
+						editButtonClicked(adId);
+					}
+				);
+				btnGroupContainer.appendChild(editButton);
+
+				// 삭제 버튼
+				var deleteButton = createButton(
+					"삭제",
+					"btn btn-outline-secondary",
+					function () {
+						var adId = data.ad_id;
+						deleteAd(adId);
+					}
+				);
+				btnGroupContainer.appendChild(deleteButton);
+
+				// 부모 컨테이너에 추가
+				buttonCell.appendChild(btnGroupContainer);
+			}
+
+			// 선택한 검색 유형을 저장할 변수
+			var searchType = "광고ID";
+
+			// 검색 유형 설정 함수
+			function setSearchType(type) {
+				searchType = type;
+				document.getElementById("searchType").innerText = searchType;
+			}
+
+			// 검색 함수
+			async function searchAd() {
+				var selectedCondition = document.getElementById("searchType").innerText.trim();
+				var searchInput = document.getElementById("searchInput").value;
+
+				// Add this line to print the selectedCondition to the console
+				console.log("Selected Condition:", selectedCondition);
+				/*
+                console.log(
+					"검색합니다! 검색타입: " + searchType + " 검색어: " + searchInput
+				);
+                */
+
+				clearTable();
+				clearPagination();
+
+				try {
+					// const response = await fetch(
+					// 	"http://127.0.0.1:8000/search_ad/",
+					// 	{
+					// 		method: "POST",
+					// 		headers: {
+					// 			"Content-Type": "application/json",
+					// 		},
+					// 		body: JSON.stringify({
+					// 			condition: selectedCondition,
+					// 			search_input: searchInput,
+					// 		}),
+					// 	}
+					// );
+					// const jsonDataArray = await response.json();
+					// console.log(jsonDataArray);
+
+					// 예시 JSON 데이터 (2개만 출력)
+					var jsonDataArray = {
+						data: [
+							{
+								ad_id: 1,
+								slot_id: 2,
+								content_type: "이미지",
+								start_date: "2024-10-20",
+								end_date: "2024-10-25"
+							},
+							{
+								ad_id: 2,
+								slot_id: 4,
+								content_type: "이미지",
+								start_date: "2024-10-22",
+								end_date: "2024-10-26"
+							},
+							{
+								ad_id: 3,
+								slot_id: 3,
+								content_type: "이미지",
+								start_date: "2024-10-24",
+								end_date: "2024-10-27"
+							}
+						]
+					};
+
+					if (jsonDataArray.length === 0) {
+						var tableBody = document
+							.getElementById("boardTable")
+							.getElementsByTagName("tbody")[0];
+						var newRow = tableBody.insertRow(tableBody.rows.length);
+						var cell = newRow.insertCell(0);
+						cell.colSpan = 6;
+						cell.textContent = "검색 결과가 없습니다.";
+					} else {
+						jsonDataArray.data
+							.slice(
+								(currentPage - 1) * itemsPerPage,
+								currentPage * itemsPerPage
+							)
+							.forEach((apiData) => {
+								const jsonData = {
+									ad_id: apiData.ad_id,
+									slot_id: apiData.slot_id,
+									content_type: apiData.content_type,
+									start_date: apiData.start_date,
+									end_date: apiData.end_date,
+								};
+								addRow(jsonData);
+							});
+						generatePagination();
+					}
+				} catch (error) {
+					console.error("Error during search:", error);
+				}
+			}
+
+			// 상세 정보 가져오기 함수
+			async function getDetailAd(adId) {
+				try {
+					// 실제 서버 API 호출은 주석처리된 부분을 사용
+					// const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
+					//     method: 'POST',
+					//     headers: {
+					//         'Content-Type': 'application/json',
+					//     },
+					//     body: JSON.stringify({
+					//         ad_id: adId,
+					//     }),
+					// });
+					// const detailData = await response.json();
+
+					// 예시 JSON 데이터 사용
+					const detailData = {
+						advertiser_id: "abcd",
+						product_name: "조던",
+						target: "20대",
+						slot_id: 1,
+						ad_url: "www.google.com",
+						link_url: "www.link.com",
+						cost_type: "click",
+						start_date: "2022-03-27",
+						end_date: "2022-02-27",
+					};
+
+					// 받아온 데이터를 출력
+					alert(JSON.stringify(detailData));
+				} catch (error) {
+					console.error("Error during fetching detail:", error);
+				}
+			}
+
+			// 수정 버튼 클릭 시 팝업 창 열기
+			async function editButtonClicked(adId) {
+				try {
+					// 실제 서버 API 호출은 주석처리된 부분을 사용
+					// const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
+					//      method: 'POST',
+					//      headers: {
+					//          'Content-Type': 'application/json',
+					//      },
+					//      body: JSON.stringify({
+					//          ad_id: adId,
+					//      }),
+					// });
+					// const detailData = await response.json();
+
+					// 예시 JSON 데이터 사용
+					const detailData = {
+						advertiser_id: "abcd",
+						product_name: "조던",
+						target: "20대",
+						slot_id: 1,
+						ad_url: "www.google.com",
+						link_url: "www.link.com",
+						cost_type: "click",
+						start_date: "2022-03-27",
+						end_date: "2022-02-27",
+					};
+
+					// Populate the popup with the retrieved data
+					document.getElementById("advertiserId").value = detailData.advertiser_id;
+					document.getElementById("productName").value = detailData.product_name;
+					document.getElementById("adId").value = adId;
+					document.getElementById("slotId").value = detailData.slot_id;
+					document.getElementById("costType").value = detailData.cost_type;
+					document.getElementById("adUrl").value = detailData.ad_url;
+					document.getElementById("linkUrl").value = detailData.link_url;
+					document.getElementById("startDate").value = detailData.start_date;
+					document.getElementById("endDate").value = detailData.end_date;
+
+					// Open the popup
+					document.getElementById("editPopup").style.display = "block";
+				} catch (error) {
+					console.error("Error fetching ad details:", error);
+					// Handle error, e.g., show an alert to the user
+				};
+			}
+
+			// Commit 버튼 클릭 시 수정 내용 적용
+			function commitChanges() {
+				try {
+					// Get the edited values from the popup
+					var editedData = {
+						advertiser_id: document.getElementById("advertiserId").value,
+						product_name: document.getElementById("productName").value,
+						ad_id: document.getElementById("adId").value,
+						slot_id: document.getElementById("slotId").value,
+						cost_type: document.getElementById("costType").value,
+						ad_url: document.getElementById("adUrl").value,
+						link_url: document.getElementById("linkUrl").value,
+						start_date: document.getElementById("startDate").value,
+						end_date: document.getElementById("endDate").value,
+					};
+
+					// Example URL, replace with your actual edit_ad API endpoint
+					const editAdApiUrl = "http://127.0.0.1:8000/edit_ad/";
+
+					// Make a POST request to the edit_ad API with the edited data
+					fetch(editAdApiUrl, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(editedData),
+					})
+					.then(response => response.json())
+					.then(data => {
+						// Handle the response from the edit_ad API if needed
+						alert("Edit Ad API Response: " + JSON.stringify(data));
+					})
+					.catch(error => {
+						console.error("Error during edit_ad API request:", error);
+						alert("Failed to edit ad. Please try again.");
+					})
+					.finally(() => {
+						// Close the popup after the request is complete, successful or not
+						document.getElementById("editPopup").style.display = "none";
+					});
+				} catch (error) {
+					console.error("Error during commitChanges:", error);
+					alert("An error occurred. Please try again.");
+				}
+			}
+
+			// Delete Ad 함수
+			async function deleteAd(adId) {
+				try {
+					// Example URL, replace with your actual delete_ad API endpoint
+					const deleteAdApiUrl = "http://127.0.0.1:8000/delete_ad/";
+
+					// Make a POST request to the delete_ad API with the ad_id value
+					const response = await fetch(deleteAdApiUrl, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							ad_id: adId,
+						}),
+					});
+
+					const data = await response.json();
+
+					// Handle the response from the delete_ad API if needed
+					alert("Delete Ad API Response: " + JSON.stringify(data));
+
+					// You can also refresh the table or perform any other necessary updates after deletion
+					searchAd();
+				} catch (error) {
+					console.error("Error during deleteAd:", error);
+					alert("Failed to delete ad. Please try again.");
+				}
+			}
+
+			// 테이블 비우는 함수
+			function clearTable() {
+				var tableBody = document
+					.getElementById("boardTable")
+					.getElementsByTagName("tbody")[0];
+				tableBody.innerHTML = "";
+			}
+
+			// 페이지네이션 초기화 함수
+			function clearPagination() {
+				var pagination = document.getElementById("pagination");
+				pagination.innerHTML = "";
+			}
+
+			// 페이지네이션 생성 함수
+			function generatePagination() {
+				var totalItems = jsonDataArray.length;
+				var totalPages = Math.ceil(totalItems / itemsPerPage);
+
+				var pagination = document.getElementById("pagination");
+
+				for (var i = 1; i <= totalPages; i++) {
+					var listItem = document.createElement("li");
+					listItem.textContent = i;
+					listItem.onclick = function () {
+						currentPage = parseInt(this.textContent);
+						searchAd();
+					};
+					pagination.appendChild(listItem);
+				}
+			}
+
+			// 초기 데이터 로드
+			searchAd();
+		</script>
+	</body>
+</html>
