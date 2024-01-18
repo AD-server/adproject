@@ -568,7 +568,6 @@
 				}
 			}
 
-			// Commit 버튼 클릭 시 수정 내용 적용
 			function commitChanges() {
 				try {
 					// Get the edited values from the popup
@@ -583,7 +582,6 @@
 						start_date: document.getElementById("startDate").value,
 						end_date: document.getElementById("endDate").value,
 					};
-					console.log(editedData);
 
 					// Example URL, replace with your actual edit_ad API endpoint
 					const editAdApiUrl = "http://127.0.0.1:8000/edit_ad/";
@@ -596,19 +594,27 @@
 						},
 						body: JSON.stringify(editedData),
 					})
-						.then((response) => response.json())
-						.then((data) => {
-							// Handle the response from the edit_ad API if needed
-							alert("Edit Ad API Response: " + JSON.stringify(data));
-						})
-						.catch((error) => {
-							console.error("Error during edit_ad API request:", error);
+					.then((response) => response.json())
+					.then((data) => {
+						// Handle the response from the edit_ad API if needed
+						alert("Edit Ad API Response: " + JSON.stringify(data));
+
+						// Check if the edit was successful before refreshing the table
+						if (data.success) {
+							// Close the popup
+							$("#editPopup").modal("hide");
+
+							// Refresh the table
+							searchAd();
+						} else {
+							// Handle the case where the edit was not successful
 							alert("Failed to edit ad. Please try again.");
-						})
-						.finally(() => {
-							// Close the popup after the request is complete, successful or not
-							document.getElementById("editPopup").style.display = "none";
-						});
+						}
+					})
+					.catch((error) => {
+						console.error("Error during edit_ad API request:", error);
+						alert("Failed to edit ad. Please try again.");
+					});
 				} catch (error) {
 					console.error("Error during commitChanges:", error);
 					alert("An error occurred. Please try again.");
