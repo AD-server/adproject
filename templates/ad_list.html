@@ -506,7 +506,7 @@
 								};
 								addRow(jsonData);
 							});
-						generatePagination();
+						generatePagination(jsonDataArray);
 					}
 				} catch (error) {
 					console.error("Error during search:", error);
@@ -732,11 +732,12 @@
 			}
 
 			// 페이지네이션 생성 함수
-			function generatePagination() {
-				var totalItems = jsonDataArray.length;
+			function generatePagination(jsonDataArray) {
+				var totalItems = jsonDataArray.data.length;
 				var totalPages = Math.ceil(totalItems / itemsPerPage);
 
 				var pagination = document.getElementById("pagination");
+				pagination.innerHTML = ""; // Clear previous pagination
 
 				for (var i = 1; i <= totalPages; i++) {
 					var listItem = document.createElement("li");
