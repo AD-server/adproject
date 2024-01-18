@@ -207,7 +207,6 @@ def delete_ad(request):
         with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
-
             sql = f"""delete from ad where ad_id = {ad_id};"""
 
             cursor.execute(sql)
