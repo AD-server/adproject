@@ -24,7 +24,7 @@ def add_product(request):
     target = inputdata['target']
     # print(inputdata)
     try:
-        with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+        with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
 
@@ -51,7 +51,7 @@ def add_ad(request):
     product_id = inputdata['product_id']
     # print(inputdata)
     try:
-        with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+        with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
 
@@ -99,7 +99,7 @@ def search_ad(request):
     if filter == "ad_id":
         if input == "":
             try:
-                with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+                with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
                     cursor = conn.cursor()
 
@@ -137,7 +137,7 @@ def search_ad(request):
     elif filter == "product_name":
         if input == "":
             try:
-                with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+                with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
                     cursor = conn.cursor()
 
@@ -224,7 +224,7 @@ def test_ad(request):
     inputdata = json.loads(request.body.decode('utf-8'))
     ad_id = inputdata['ad_id']
     try:
-        with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+        with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
 
             cursor = conn.cursor()
 
