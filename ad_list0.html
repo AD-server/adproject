@@ -151,7 +151,10 @@
 							<span id="searchType">ad_id</span>
 						</button>
 						<div class="dropdown-menu" id="searchType">
-							<a class="dropdown-item" href="#" onclick="setSearchType('ad_id')"
+							<a
+								class="dropdown-item"
+								href="#"
+								onclick="setSearchType('ad_id')"
 								>ad_id</a
 							>
 							<a
@@ -203,106 +206,6 @@
 			</table>
 		</div>
 
-		<div class="modal fade" id="editPopup">
-			<div class="modal-dialog modal-lg">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title">Edit Ad</h4>
-						<button
-							type="button"
-							class="close"
-							data-dismiss="modal"
-							aria-label="Close"
-						>
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<!--card-->
-						<div class="card-body">
-							<div class="form-group">
-								<label>Advertiser Id</label>
-								<input
-									class="form-control"
-									id="advertiserId"
-									placeholder="advertiser id"
-								/>
-							</div>
-							<div class="form-group">
-								<label>product name</label>
-								<input
-									class="form-control"
-									id="productName"
-									placeholder="productName"
-								/>
-							</div>
-							<div class="form-group">
-								<label>ad id</label>
-								<input class="form-control" id="adId" placeholder="adId" />
-							</div>
-							<div class="form-group">
-								<label>slot id</label>
-								<input
-									class="form-control"
-									id="inputSlotId"
-									placeholder="slot id"
-								/>
-							</div>
-							<div class="form-group">
-								<label>cost type</label>
-								<input
-									class="form-control"
-									id="costType"
-									placeholder="cost type"
-								/>
-							</div>
-							<div class="form-group">
-								<label>ad url</label>
-								<input class="form-control" id="adUrl" placeholder="adUrl" />
-							</div>
-							<div class="form-group">
-								<label>link url</label>
-								<input
-									class="form-control"
-									id="linkUrl"
-									placeholder="linkUrl"
-								/>
-							</div>
-							<div class="form-group">
-								<label>start date</label>
-								<input
-									class="form-control"
-									id="startDate"
-									placeholder="start date"
-								/>
-							</div>
-							<div class="form-group">
-								<label>end date</label>
-								<input
-									class="form-control"
-									id="endDate"
-									placeholder="end date"
-								/>
-							</div>
-						</div>
-						<!--card 끝-->
-					</div>
-					<div class="modal-footer justify-content-between">
-						<button type="button" class="btn btn-default" data-dismiss="modal">
-							Close
-						</button>
-						<button
-							type="button"
-							class="btn btn-primary"
-							onclick="commitChanges()"
-						>
-							Edit
-						</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!--
 		<div id="editPopup" class="popup-container">
 			<label for="advertiserId">Advertiser ID:</label>
 			<input type="text" id="advertiserId" readonly />
@@ -335,7 +238,6 @@
 				<button onclick="commitChanges()">Commit</button>
 			</div>
 		</div>
-	-->
 
 		<ul class="pagination" id="pagination"></ul>
 
@@ -411,27 +313,24 @@
 			}
 
 			// 선택한 검색 유형을 저장할 변수
-			var selectedCondition = "광고ID";
+			var searchType = "광고ID";
 
 			// 검색 유형 설정 함수
-			function setSelectedCondition(con) {
-				selectedCondition = con;
-				document.getElementById("selectedCondition").innerText =
-					selectedCondition;
+			function setSearchType(type) {
+				searchType = type;
+				document.getElementById("searchType").innerText = searchType;
 			}
 
 			// 검색 함수
 			async function searchAd() {
-				var selectedCondition = document
-					.getElementById("searchType")
-					.innerText.trim();
+				var selectedCondition = document.getElementById("searchType").innerText.trim();
 				var searchInput = document.getElementById("searchInput").value;
 
 				// Add this line to print the selectedCondition to the console
 				console.log("Selected Condition:", selectedCondition);
 				/*
                 console.log(
-					"검색합니다! 검색타입: " + search + " 검색어: " + searchInput
+					"검색합니다! 검색타입: " + searchType + " 검색어: " + searchInput
 				);
                 */
 
@@ -463,23 +362,23 @@
 								slot_id: 2,
 								content_type: "이미지",
 								start_date: "2024-10-20",
-								end_date: "2024-10-25",
+								end_date: "2024-10-25"
 							},
 							{
 								ad_id: 2,
 								slot_id: 4,
 								content_type: "이미지",
 								start_date: "2024-10-22",
-								end_date: "2024-10-26",
+								end_date: "2024-10-26"
 							},
 							{
 								ad_id: 3,
 								slot_id: 3,
 								content_type: "이미지",
 								start_date: "2024-10-24",
-								end_date: "2024-10-27",
-							},
-						],
+								end_date: "2024-10-27"
+							}
+						]
 					};
 
 					if (jsonDataArray.length === 0) {
@@ -533,7 +432,6 @@
 						advertiser_id: "abcd",
 						product_name: "조던",
 						target: "20대",
-						ad_id: 1,
 						slot_id: 1,
 						ad_url: "www.google.com",
 						link_url: "www.link.com",
@@ -569,7 +467,6 @@
 						advertiser_id: "abcd",
 						product_name: "조던",
 						target: "20대",
-						ad_id: 1,
 						slot_id: 1,
 						ad_url: "www.google.com",
 						link_url: "www.link.com",
@@ -578,66 +475,23 @@
 						end_date: "2022-02-27",
 					};
 
-					// 각 입력란에 해당하는 id 배열
-					const inputIds = [
-						detailData.advertiser_id,
-						detailData.product_name,
-						detailData.ad_id,
-						detailData.slot_id,
-						detailData.cost_type,
-						detailData.ad_url,
-						detailData.link_url,
-						detailData.start_date,
-						detailData.end_date,
-					];
-
-					// 각 입력란에 detailData의 값을 설정
-
-					const targetID = [
-						"advertiserId",
-						"productName",
-						"adId",
-						"slotId",
-						"costType",
-						"adUrl",
-						"linkUrl",
-						"startDate",
-						"endDate",
-					];
-					var i = 0;
-					inputIds.forEach((id) => {
-						console.log(id);
-						var inputElement = document.getElementById(targetID[i]);
-						i += 1;
-						if (inputElement) {
-							// value 속성 설정
-							inputElement.value = id;
-						}
-					});
-
-					/*
 					// Populate the popup with the retrieved data
-					document.getElementById("advertiserId").value =
-						detailData.advertiser_id;
-					document.getElementById("productName").value =
-						detailData.product_name;
-					document.getElementById("target").value = detailData.target;
-					document.getElementById("adId").value = detailData.ad_id;
+					document.getElementById("advertiserId").value = detailData.advertiser_id;
+					document.getElementById("productName").value = detailData.product_name;
+					document.getElementById("adId").value = adId;
 					document.getElementById("slotId").value = detailData.slot_id;
 					document.getElementById("costType").value = detailData.cost_type;
 					document.getElementById("adUrl").value = detailData.ad_url;
 					document.getElementById("linkUrl").value = detailData.link_url;
 					document.getElementById("startDate").value = detailData.start_date;
 					document.getElementById("endDate").value = detailData.end_date;
-*/
+
 					// Open the popup
-					// 모달 열기
-					$("#editPopup").modal("show");
-					// document.getElementById("editPopup").style.display = "block";
+					document.getElementById("editPopup").style.display = "block";
 				} catch (error) {
 					console.error("Error fetching ad details:", error);
 					// Handle error, e.g., show an alert to the user
-				}
+				};
 			}
 
 			// Commit 버튼 클릭 시 수정 내용 적용
@@ -655,7 +509,6 @@
 						start_date: document.getElementById("startDate").value,
 						end_date: document.getElementById("endDate").value,
 					};
-					console.log(editedData);
 
 					// Example URL, replace with your actual edit_ad API endpoint
 					const editAdApiUrl = "http://127.0.0.1:8000/edit_ad/";
@@ -668,19 +521,19 @@
 						},
 						body: JSON.stringify(editedData),
 					})
-						.then((response) => response.json())
-						.then((data) => {
-							// Handle the response from the edit_ad API if needed
-							alert("Edit Ad API Response: " + JSON.stringify(data));
-						})
-						.catch((error) => {
-							console.error("Error during edit_ad API request:", error);
-							alert("Failed to edit ad. Please try again.");
-						})
-						.finally(() => {
-							// Close the popup after the request is complete, successful or not
-							document.getElementById("editPopup").style.display = "none";
-						});
+					.then(response => response.json())
+					.then(data => {
+						// Handle the response from the edit_ad API if needed
+						alert("Edit Ad API Response: " + JSON.stringify(data));
+					})
+					.catch(error => {
+						console.error("Error during edit_ad API request:", error);
+						alert("Failed to edit ad. Please try again.");
+					})
+					.finally(() => {
+						// Close the popup after the request is complete, successful or not
+						document.getElementById("editPopup").style.display = "none";
+					});
 				} catch (error) {
 					console.error("Error during commitChanges:", error);
 					alert("An error occurred. Please try again.");

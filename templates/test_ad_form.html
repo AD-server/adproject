@@ -7,6 +7,13 @@
 	TEST Ad
 </button>
 
+<style>
+	#tableDataSection {
+		overflow-x: auto; /* 테이블이 모달 창을 넘어가면 가로 스크롤 표시 */
+		max-width: 100%; /* 부모 요소의 최대 폭을 100%로 설정 */
+	}
+</style>
+
 <div class="modal fade" id="test_ad_form">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -24,49 +31,60 @@
 
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<!-- Section 1 -->
-						<!-- Card -->
 						<div class="card-body">
 							<div class="form-group">
-								<label>product id</label>
+								<label>product name</label>
 								<input
 									class="form-control"
-									id="inputProductId"
-									placeholder="product id"
+									id="inputProductName"
+									placeholder="product name"
 								/>
 							</div>
-							<div class="form-group">
-								<label>date</label>
-								<input class="form-control" id="inputDate" placeholder="date" />
-							</div>
 						</div>
-						<!-- Card 끝 -->
-
+						<!--
 						<button type="button" class="btn btn-default" data-dismiss="modal">
 							Close
 						</button>
-						<button type="button" class="btn btn-success" onclick="testAd()">
+						-->
+						<button
+							type="button"
+							class="btn btn-success float-right"
+							onclick="testAd()"
+						>
 							TEST
 						</button>
 						<!-- Section 1 끝 -->
-
-						<!-- Section 2 -->
-						<br />
-						<br />
-						<h3>결과</h3>
-						<br />
-						<div id="textDataSection">()</div>
-						<br />
-						<!-- Section 2 끝 -->
 					</div>
-					<div class="col-md-6">
-						<!-- Section 3 -->
+
+					<div class="col-md-8">
 						<br />
-						<h3>슬롯</h3>
-						<div>()</div>
+						<b>서비스 중인 광고 목록</b>
+						<div id="tableDataSection">
+							<table class="table table-bordered table-hover">
+								<thead>
+									<tr>
+										<th>슬롯ID</th>
+										<th>ad url</th>
+										<th>링크 url</th>
+									</tr>
+								</thead>
+								<tbody id="tableBody">
+									<!-- 데이터 추가될 자리 -->
+								</tbody>
+							</table>
+						</div>
+
+						<button
+							type="button"
+							class="btn btn-secondary float-right"
+							onclick="alert(textData);"
+						>
+							텍스트
+						</button>
 						<br />
-						<!-- Section 3 끝 -->
+						<br />
 					</div>
 				</div>
 			</div>
@@ -74,51 +92,94 @@
 	</div>
 
 	<script>
-		var textData = "()";
+				var textData = "상품 이름을 입력해주세요!";
 
-		async function testAd() {
-			var productId = document.getElementById("inputProductId").value;
-			var date = document.getElementById("inputDate").value;
+				async function testAd() {
+					var productName = document.getElementById("inputProductName").value;
+					// var date = document.getElementById("inputDate").value;
 
-			/*
-		try {
-			const response = fetch("http://127.0.0.1:8000/test_ad/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(product_id: productId),
-			})
-				.then((response) => {
-					testData = response.json();
-					return response.json();
-				})
-				.then((data) => {
-					console.log("Success:", data);
-				})
-				.catch((error) => {
-					console.error("Error2:", error);
-				});
-		} catch (error) {
-			console.error("Error1:", error);
-		}
+				try {
+					const response = fetch("http://127.0.0.1:8000/test_ad/", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(product_name: productName),
+					})
+						.then((response) => {
+							testData = response.json();
+							return response.json();
+						})
+						.then((data) => {
+							console.log("Success:", data);
+						})
+						.catch((error) => {
+							console.error("Error2:", error);
+						});
+				} catch (error) {
+					console.error("Error1:", error);
+				}
+		/*
+					var testData = {
+						data: [
+							{
+								advertiser_id: "abcd",
+								title: "조던",
+								target: "20대",
+								ad_url: "www.google.comvvvvvvvvvvvvvvvvvvvvvvvvv",
+								link_url: "www.link.comvvvvvvvvvvvvvvvvvvvvvvvvvvv",
+								slot_id: 1,
+								cost_type: "click",
+								end_date: "2022-02-27",
+								start_date: "2022-03-27",
+							},
+							{
+								advertiser_id: "abcd",
+								title: "조던2",
+								target: "30대",
+								ad_url: "www.google2.com",
+								link_url: "www.link2.com",
+								slot_id: 2,
+								cost_type: "click",
+								end_date: "2022-02-28",
+								start_date: "2022-03-28",
+							},
+						],
+					};
 		*/
+					textData = JSON.stringify(testData.data);
 
-			var testData = {
-				advertiser_id: "abcd",
-				title: "조던",
-				target: "20대",
-				ad_url: "www.google.com",
-				link_url: "www.link.com",
-				slot_id: 1,
-				cost_type: "click",
-				end_date: "2022-02-27",
-				start_date: "2022-03-27",
-			};
+					var dataLength = testData.data.length;
+					// console.log(textData);
+					// console.log(dataLength);
 
-			textData = JSON.stringify(testData);
-			var textDataContainer = document.getElementById("textDataSection");
-			textDataContainer.textContent = textData;
-		}
+					var tableDataContainer = document.getElementById("tableBody");
+					tableDataContainer.innerHTML = ""; // table 비우기
+
+					for (var i = 0; i < dataLength; i++) {
+						var rowData = testData.data[i];
+						var row = document.createElement("tr");
+
+						var slotIdCell = document.createElement("td");
+						slotIdCell.textContent = rowData.slot_id;
+						row.appendChild(slotIdCell);
+
+						var adUrlCell = document.createElement("td");
+						var urlElement = document.createElement("a");
+						urlElement.href = rowData.ad_url;
+						urlElement.textContent = rowData.ad_url;
+						adUrlCell.appendChild(urlElement);
+						row.appendChild(adUrlCell);
+
+						var linkUrlCell = document.createElement("td");
+						var urlElement = document.createElement("a");
+						urlElement.href = rowData.link_url;
+						urlElement.textContent = rowData.link_url;
+						linkUrlCell.appendChild(urlElement);
+						row.appendChild(linkUrlCell);
+
+						tableDataContainer.appendChild(row);
+					}
+				}
 	</script>
 </div>
