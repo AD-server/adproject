@@ -20,7 +20,7 @@ def add_product(request):
     # print(request.body)
     inputdata = json.loads(request.body.decode('utf-8'))
     advertiser_id = inputdata['advertiser_id']
-    title = inputdata['title']
+    title = inputdata['product_name']
     target = inputdata['target']
     # print(inputdata)
     try:
@@ -82,7 +82,7 @@ def detail_ad(request):
             conn.commit()
 
             
-            return JsonResponse({"advertiser_id" : data[0][0], "title" : data[0][1], "target" : data[0][2], "url" : data[0][3], "link_url" : data[0][4], "slot_id" : data[0][5], "cost_type" : data[0][6], "end_date" : data[0][7], "start_date" : data[0][8]}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
+            return JsonResponse({"ad_id": ad_id, "advertiser_id" : data[0][0], "product_name" : data[0][1], "target" : data[0][2], "url" : data[0][3], "link_url" : data[0][4], "slot_id" : data[0][5], "cost_type" : data[0][6], "end_date" : data[0][7], "start_date" : data[0][8]}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
     except Exception as e:    
         print('예외가 발생했습니다.', e)
         return JsonResponse({'success' : False}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
@@ -90,14 +90,16 @@ def detail_ad(request):
 
 @csrf_exempt
 def search_ad(request):
-    # print(request.body)
+    
     inputdata = json.loads(request.body.decode('utf-8'))
+    print(inputdata)
     filter = inputdata['condition']
     input = inputdata['search_input']
+
     if filter == "ad_id":
         if input == "":
             try:
-                with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
+                with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
 
                     cursor = conn.cursor()
 
@@ -135,7 +137,7 @@ def search_ad(request):
     elif filter == "product_name":
         if input == "":
             try:
-                with pymysql.connect(host = "localhost", user = "root", password = "00000000", db = 'ad', charset = 'utf8') as conn:
+                with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
 
                     cursor = conn.cursor()
 
@@ -172,7 +174,7 @@ def search_ad(request):
                 return JsonResponse({'success' : False}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
 
 @csrf_exempt
-def modify_ad(request):
+def edit_ad(request):
     # print(request.body)
     inputdata = json.loads(request.body.decode('utf-8'))
     ad_id = inputdata['ad_id']
@@ -221,21 +223,43 @@ def delete_ad(request):
 @csrf_exempt
 def test_ad(request):
     inputdata = json.loads(request.body.decode('utf-8'))
-    ad_id = inputdata['ad_id']
-    try:
-        with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+    product_name = inputdata['product_name']
+    if product_name == "":
+            try:
+                with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
 
-            cursor = conn.cursor()
+                    cursor = conn.cursor()
 
-            sql = f"""select url, link_url from ad where ad_id = {ad_id};"""
+                    sql = f"""select slot_id, url, link_url from ad;"""
 
-            cursor.execute(sql)
-            data = cursor.fetchall()
-            conn.commit()
+                    cursor.execute(sql)
 
-            
-            return JsonResponse({'success' : True, "ad_url" : data[0][0], "link_url" : data[0][1]}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
-    except Exception as e:    
-        print('예외가 발생했습니다.', e)
-        return JsonResponse({'success' : False}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
+                    data = cursor.fetchall()
+                    json_data = {"data": [{"slot_id": slot_id, "ad_url" : ad_url, "link_url" : link_url} for slot_id, ad_url, link_url in data]}
+                    
+                    conn.commit()
+
+                    return JsonResponse(json_data, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
+            except Exception as e:    
+                print('예외가 발생했습니다.', e)
+                return JsonResponse({'success' : False}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
+    else:
+        try:
+            with pymysql.connect(host = "localhost", user = "root", password = "s01010101!", db = 'ad', charset = 'utf8') as conn:
+
+                cursor = conn.cursor()
+                
+                sql = f"""select ad.slot_id, url, link_url from ad,slot,product where slot.slot_id = ad.slot_id and product.product_id = ad.product_id and title like "%{product_name}%" ;"""
+
+                cursor.execute(sql)
+
+                data = cursor.fetchall()
+                json_data = {"data": [{"slot_id": slot_id, "ad_url" : ad_url, "link_url" : link_url} for slot_id, ad_url, link_url in data]}
+                
+                conn.commit()
+
+                return JsonResponse(json_data, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
+        except Exception as e:    
+            print('예외가 발생했습니다.', e)
+            return JsonResponse({'success' : False}, json_dumps_params={'ensure_ascii': False}, content_type = 'application/json; charest=utf-8')
 
