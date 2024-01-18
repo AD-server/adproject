@@ -249,7 +249,7 @@ def test_ad(request):
 
                 cursor = conn.cursor()
                 
-                sql = f"""select ad.slot_id, url, link_url from ad,slot,product where slot.slot_id = ad.slot_id and product.product_id = ad.product_id and title like "%{product_name}%" order by ad_id;"""
+                sql = f"""select ad.slot_id, url, link_url from ad,slot,product where slot.slot_id = ad.slot_id and product.product_id = ad.product_id and title like "%{product_name}%" ;"""
 
                 cursor.execute(sql)
 
