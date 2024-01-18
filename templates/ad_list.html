@@ -99,6 +99,42 @@
 			td:last-child {
 				text-align: center;
 			}
+
+			.popup-container {
+				display: none;
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #fff;
+				padding: 20px;
+				box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				z-index: 999;
+			}
+
+			.popup-container label {
+				display: block;
+				margin-bottom: 10px;
+			}
+
+			.popup-container input {
+				width: 100%;
+				padding: 5px;
+				margin-bottom: 10px;
+			}
+
+			.popup-buttons {
+				text-align: right;
+				margin-top: 10px; /* Adjust the top margin as needed */
+			}
+
+			.popup-container button {
+				background-color: #4caf50;
+				color: #fff;
+				padding: 10px;
+				border: none;
+				cursor: pointer;
+			}
 		</style>
 	</head>
 
@@ -170,38 +206,45 @@
 			</table>
 		</div>
 
+		<div id="editPopup" class="popup-container">
+			<label for="advertiserId">Advertiser ID:</label>
+			<input type="text" id="advertiserId" readonly />
+
+			<label for="productName">Product ID:</label>
+			<input type="text" id="productName" readonly />
+
+			<label for="adId">Ad ID:</label>
+			<input type="text" id="adId" readonly />
+
+			<label for="slotId">Slot ID:</label>
+			<input type="text" id="slotId" />
+
+			<label for="contentType">Content Type:</label>
+			<input type="text" id="contentType" />
+
+			<label for="costType">Cost Type:</label>
+			<input type="text" id="costType" />
+
+			<label for="adUrl">Ad URL:</label>
+			<input type="text" id="adUrl" />
+
+			<label for="linkUrl">Link URL:</label>
+			<input type="text" id="linkUrl" />
+
+			<label for="startDate">Start Date:</label>
+			<input type="text" id="startDate" />
+
+			<label for="endDate">End Date:</label>
+			<input type="text" id="endDate" />
+
+			<div class="popup-buttons">
+				<button onclick="commitChanges()">Commit</button>
+			</div>
+		</div>
+
 		<ul class="pagination" id="pagination"></ul>
 
 		<script>
-			// 예시 JSON 데이터 (2개만 출력)
-			var jsonDataArray = [
-				'{"ad_id": 1, "slot_id": 1, "content_type": "영상", "start_date": "2024-01-16", "end_date": "2024-01-20"}',
-				'{"ad_id": 2, "slot_id": 2, "content_type": "이미지", "start_date": "2024-02-01", "end_date": "2024-02-10"}',
-				'{"ad_id": 3, "slot_id": 3, "content_type": "영상", "start_date": "2024-03-15", "end_date": "2024-03-20"}',
-				'{"ad_id": 4, "slot_id": 4, "content_type": "이미지", "start_date": "2024-04-05", "end_date": "2024-04-15"}',
-				'{"ad_id": 5, "slot_id": 5, "content_type": "영상", "start_date": "2024-05-10", "end_date": "2024-05-18"}',
-				'{"ad_id": 6, "slot_id": 6, "content_type": "이미지", "start_date": "2024-06-02", "end_date": "2024-06-10"}',
-				'{"ad_id": 7, "slot_id": 7, "content_type": "영상", "start_date": "2024-07-12", "end_date": "2024-07-20"}',
-				'{"ad_id": 8, "slot_id": 8, "content_type": "이미지", "start_date": "2024-08-01", "end_date": "2024-08-10"}',
-				'{"ad_id": 9, "slot_id": 9, "content_type": "영상", "start_date": "2024-09-05", "end_date": "2024-09-15"}',
-				'{"ad_id": 10, "slot_id": 10, "content_type": "이미지", "start_date": "2024-10-10", "end_date": "2024-10-18"}',
-				'{"ad_id": 11, "slot_id": 11, "content_type": "영상", "start_date": "2024-11-12", "end_date": "2024-11-20"}',
-				'{"ad_id": 12, "slot_id": 12, "content_type": "이미지", "start_date": "2024-12-01", "end_date": "2024-12-10"}',
-				'{"ad_id": 13, "slot_id": 13, "content_type": "영상", "start_date": "2025-01-05", "end_date": "2025-01-15"}',
-				'{"ad_id": 14, "slot_id": 14, "content_type": "이미지", "start_date": "2025-02-10", "end_date": "2025-02-18"}',
-				'{"ad_id": 15, "slot_id": 15, "content_type": "영상", "start_date": "2025-03-12", "end_date": "2025-03-20"}',
-				'{"ad_id": 16, "slot_id": 16, "content_type": "이미지", "start_date": "2025-04-01", "end_date": "2025-04-10"}',
-				'{"ad_id": 17, "slot_id": 17, "content_type": "영상", "start_date": "2025-05-05", "end_date": "2025-05-15"}',
-				'{"ad_id": 18, "slot_id": 18, "content_type": "이미지", "start_date": "2025-06-10", "end_date": "2025-06-18"}',
-				'{"ad_id": 19, "slot_id": 19, "content_type": "영상", "start_date": "2025-07-12", "end_date": "2025-07-20"}',
-				'{"ad_id": 20, "slot_id": 20, "content_type": "이미지", "start_date": "2025-08-01", "end_date": "2025-08-10"}',
-				'{"ad_id": 21, "slot_id": 21, "content_type": "영상", "start_date": "2025-09-05", "end_date": "2025-09-15"}',
-				'{"ad_id": 22, "slot_id": 22, "content_type": "이미지", "start_date": "2025-10-10", "end_date": "2025-10-18"}',
-				'{"ad_id": 23, "slot_id": 23, "content_type": "영상", "start_date": "2025-11-12", "end_date": "2025-11-20"}',
-				'{"ad_id": 24, "slot_id": 24, "content_type": "이미지", "start_date": "2025-12-01", "end_date": "2025-12-10"}',
-				'{"ad_id": 25, "slot_id": 25, "content_type": "영상", "start_date": "2026-01-05", "end_date": "2026-01-15"}',
-			];
-
 			var itemsPerPage = 10;
 			var currentPage = 1;
 
@@ -251,7 +294,8 @@
 					"수정",
 					"btn btn-outline-primary",
 					function () {
-						alert("수정 버튼 클릭: " + data.ad_id);
+						var adId = data.ad_id;
+						editButtonClicked(adId);
 					}
 				);
 				btnGroupContainer.appendChild(editButton);
@@ -294,33 +338,51 @@
 				try {
 					//실제 서버 API 호출은 주석처리된 부분을 사용
 					/*
-								const response = await fetch(
-									"http://192.168.137.52:8080/search_ad/",
-									{
-										method: "POST",
-										headers: {
-											"Content-Type": "application/json",
-										},
-										body: JSON.stringify({
-											condition: selectedCondition,
-											search_input: searchInput,
-										}),
-									}
-								);
-								const data = await response.json();
-								console.log(data);
-						                 */
-					// 예시 JSON 데이터 사용
-					const data = jsonDataArray.map((json) => {
-						try {
-							return JSON.parse(json);
-						} catch (error) {
-							console.error("Error parsing JSON:", error);
-							return null; // 오류가 발생한 경우 해당 데이터 무시
+					const response = await fetch(
+						"http://192.168.137.52:8080/search_ad/",
+						{
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								condition: selectedCondition,
+								search_input: searchInput,
+							}),
 						}
-					});
+					);
+					const data = await response.json();
+					console.log(data);
+					*/
+					// 예시 JSON 데이터 (2개만 출력)
+					var jsonDataArray = {
+						data: [
+							{
+								ad_id: 1,
+								slot_id: 2,
+								content_type: "이미지",
+								start_date: "2024-10-20",
+								end_date: "2024-10-25"
+							},
+							{
+								ad_id: 2,
+								slot_id: 4,
+								content_type: "이미지",
+								start_date: "2024-10-22",
+								end_date: "2024-10-26"
+							},
+							{
+								ad_id: 3,
+								slot_id: 3,
+								content_type: "이미지",
+								start_date: "2024-10-24",
+								end_date: "2024-10-27"
+							}
+						]
+					};
 
-					if (data.length === 0) {
+					if (jsonDataArray.data.length === 0) {
+						// Handle empty data
 						var tableBody = document
 							.getElementById("boardTable")
 							.getElementsByTagName("tbody")[0];
@@ -329,7 +391,7 @@
 						cell.colSpan = 6;
 						cell.textContent = "검색 결과가 없습니다.";
 					} else {
-						data
+						jsonDataArray.data
 							.slice(
 								(currentPage - 1) * itemsPerPage,
 								currentPage * itemsPerPage
@@ -355,7 +417,7 @@
 			async function getDetailAd(adId) {
 				try {
 					// 실제 서버 API 호출은 주석처리된 부분을 사용
-					// const response = await fetch('https://api.example.com/detail_ad', {
+					// const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
 					//     method: 'POST',
 					//     headers: {
 					//         'Content-Type': 'application/json',
@@ -369,20 +431,113 @@
 					// 예시 JSON 데이터 사용
 					const detailData = {
 						advertiser_id: "abcd",
-						title: "조던",
+						product_name: "조던",
 						target: "20대",
+						slot_id: 1,
 						ad_url: "www.google.com",
 						link_url: "www.link.com",
-						slot_id: 1,
 						cost_type: "click",
-						end_date: "2022-02-27",
 						start_date: "2022-03-27",
+						end_date: "2022-02-27",
 					};
 
 					// 받아온 데이터를 출력
 					alert(JSON.stringify(detailData));
 				} catch (error) {
 					console.error("Error during fetching detail:", error);
+				}
+			}
+
+			// 수정 버튼 클릭 시 팝업 창 열기
+			function editButtonClicked(adId) {
+				try {
+					// 실제 서버 API 호출은 주석처리된 부분을 사용
+					// const response = await fetch('http://127.0.0.1:8000/detail_ad/', {
+					//     method: 'POST',
+					//     headers: {
+					//         'Content-Type': 'application/json',
+					//     },
+					//     body: JSON.stringify({
+					//         ad_id: adId,
+					//     }),
+					// });
+					// const detailData = await response.json();
+
+					// 예시 JSON 데이터 사용
+					const adInfo = {
+						advertiser_id: "abcd",
+						product_name: "조던",
+						target: "20대",
+						slot_id: 1,
+						ad_url: "www.google.com",
+						link_url: "www.link.com",
+						cost_type: "click",
+						start_date: "2022-03-27",
+						end_date: "2022-02-27",
+					};
+
+					// Populate the popup with the retrieved data
+					document.getElementById("advertiserId").value = adInfo.advertiser_id;
+					document.getElementById("productName").value = adInfo.product_name;
+					document.getElementById("adId").value = adId;
+					document.getElementById("slotId").value = adInfo.slot_id;
+					document.getElementById("costType").value = adInfo.cost_type;
+					document.getElementById("adUrl").value = adInfo.ad_url;
+					document.getElementById("linkUrl").value = adInfo.link_url;
+					document.getElementById("startDate").value = adInfo.start_date;
+					document.getElementById("endDate").value = adInfo.end_date;
+
+					// Open the popup
+					document.getElementById("editPopup").style.display = "block";
+				} catch (error) {
+					console.error("Error fetching ad details:", error);
+					// Handle error, e.g., show an alert to the user
+				};
+			}
+
+			// Commit 버튼 클릭 시 수정 내용 적용
+			function commitChanges() {
+				try {
+					// Get the edited values from the popup
+					var editedData = {
+						advertiser_id: document.getElementById("advertiserId").value,
+						product_name: document.getElementById("productName").value,
+						ad_id: document.getElementById("adId").value,
+						slot_id: document.getElementById("slotId").value,
+						cost_type: document.getElementById("costType").value,
+						ad_url: document.getElementById("adUrl").value,
+						link_url: document.getElementById("linkUrl").value,
+						start_date: document.getElementById("startDate").value,
+						end_date: document.getElementById("endDate").value,
+					};
+
+					// Example URL, replace with your actual edit_ad API endpoint
+					const editAdApiUrl = "http://127.0.0.1:8000/edit_ad/";
+
+					// Make a POST request to the edit_ad API with the edited data
+					fetch(editAdApiUrl, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(editedData),
+					})
+					.then(response => response.json())
+					.then(data => {
+						// Handle the response from the edit_ad API if needed
+						console.log("Edit Ad API Response:", data);
+					})
+					.catch(error => {
+						console.error("Error during edit_ad API request:", error);
+						// Handle the error, e.g., show an alert to the user
+					})
+					.finally(() => {
+						// Close the popup after the request is complete, successful or not
+						document.getElementById("editPopup").style.display = "none";
+					});
+				} catch (error) {
+					console.error("Error during commitChanges:", error);
+					// Handle error, e.g., show an alert to the user
 				}
 			}
 
