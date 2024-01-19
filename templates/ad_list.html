@@ -362,6 +362,8 @@
 					"검색합니다! 검색타입: " + search + " 검색어: " + searchInput
 				);
                 */
+				
+				// page1로 초기화
 				currentPage = 1;
 
 				clearTable();
@@ -408,7 +410,7 @@
 					// 	],
 					// };
 
-					if (jsonDataArray.length === 0) {
+					if (jsonDataArray.data.length === 0) {
 						var tableBody = document
 							.getElementById("boardTable")
 							.getElementsByTagName("tbody")[0];
@@ -436,6 +438,7 @@
 					}
 				} catch (error) {
 					console.error("Error during search:", error);
+					alert("검색 중에 오류가 발생했습니다.");
 				}
 			}
 
