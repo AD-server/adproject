@@ -362,6 +362,7 @@
 					"검색합니다! 검색타입: " + search + " 검색어: " + searchInput
 				);
                 */
+				currentPage = 1;
 
 				clearTable();
 				clearPagination();
@@ -624,7 +625,7 @@
 					// Handle the response from the delete_ad API if needed
 					alert("Delete Ad API Response: " + JSON.stringify(data));
 
-					// You can also refresh the table or perform any other necessary updates after deletion
+					// Refresh the table after deletion
 					searchAd();
 				} catch (error) {
 					console.error("Error during deleteAd:", error);
