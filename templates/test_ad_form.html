@@ -119,6 +119,8 @@
 
 						// textData = JSON.stringify(testData.data);
 						testData = await response.json();
+						textData = JSON.stringify(testData.data);
+
 						console.log(textData);
 						var dataLength = testData.data.length;
 						// console.log(textData);
